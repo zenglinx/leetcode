@@ -21,12 +21,14 @@ class Solution {
             return null;
         }
 
-        ListNode ret = lists[0];
-        for (int i = 1; i < lists.length; i++) {
-            ret = merge2Lists(ret, lists[i]);
+        if (lists.length == 1) {
+            return lists[0];
         }
 
-        return ret;
+        ListNode left = mergeKLists(Arrays.copyOfRange(lists, 0, lists.length / 2));
+        ListNode right = mergeKLists(Arrays.copyOfRange(lists, lists.length / 2, lists.length));
+
+        return merge2Lists(left, right);
     }
 
     private ListNode merge2Lists(ListNode list1, ListNode list2) {
