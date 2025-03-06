@@ -4,8 +4,6 @@
  * [39] 组合总和
  */
 
-// @lc code=start
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,40 +13,39 @@ class Solution {
 
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         this.nums = candidates;
-        backtrace(new ArrayList(), 0, target);
+        this.ret = new ArrayList<>();
 
+        backtrack(0, new ArrayList<>(), target);
         return ret;
     }
 
-    private void backtrace(List<Integer> prevList, int idx, int target) {
-        int count = target / nums[idx] + 1;
-        for (int i = 0; i < count; i++) {
-            int value = nums[idx] * i;
-            if (value == target && i > 0) {
-                addLastElements(prevList, i, nums[idx]);
-                ret.add(new ArrayList<Integer>(prevList));
-                removeLastElements(prevList, i);
+    private void backtrack(int idx, List<Integer> counts, int target) {
+        if (target == 0) {
+            List<Integer> list = new ArrayList<>();
+            for (int i = 0; i < counts.size(); i++) {
+                int count = counts.get(i);
+                while (count > 0) {
+                    list.add(nums[i]);
+                    count--;
+                }
             }
 
-            if (value < target && idx < nums.length - 1) {
-                addLastElements(prevList, i, nums[idx]);
-                backtrace(prevList, idx + 1, target - nums[idx] * i);
-                removeLastElements(prevList, i);
-            }
+            ret.add(list);
+            return;
         }
-    }
 
-    private void addLastElements(List<Integer> list, int count, int element) {
-        for (int i = 0; i < count; i++) {
-            list.add(element);
+        if (idx >= nums.length) {
+            return;
         }
-    }
 
-    private void removeLastElements(List<Integer> list, int count) {
-        for (int i = 0; i < count; i++) {
-            list.remove(list.size() - 1);
+        int num = nums[idx];
+        int maxCount = target / num;
+        for (int i = 0; i <= maxCount; i++) {
+            int newTarget = target - num * i;
+            counts.add(i);
+            backtrack(idx + 1, counts, newTarget);
+            counts.remove(counts.size() - 1);
         }
     }
 }
 // @lc code=end
-
