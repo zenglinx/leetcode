@@ -7,31 +7,26 @@
 // @lc code=start
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 class Solution {
-    Map<String, List<String>> charsMap = new HashMap();
+    private Map<String, List<String>> map = new HashMap<>();
 
     public List<List<String>> groupAnagrams(String[] strs) {
-        for (int i = 0; i < strs.length; i++) {
+        for (String str : strs) {
             char[] chars = new char[26];
-            for (int j = 0; j < strs[i].length(); j++) {
-                chars[strs[i].charAt(j) - 'a']++;
+            for (int i = 0; i < str.length(); i++) {
+                chars[str.charAt(i) - 'a']++;
             }
-            String sortedStr = String.valueOf(chars);
 
-            if (charsMap.containsKey(sortedStr)) {
-                charsMap.get(sortedStr).add(strs[i]);
-            } else {
-                List<String> list = new ArrayList<>();
-                list.add(strs[i]);
-                charsMap.put(sortedStr, list);
-            }
+            List<String> l = map.getOrDefault(String.valueOf(chars), new ArrayList<>());
+            l.add(str);
+            map.put(String.valueOf(chars), l);
         }
 
-        return new ArrayList<List<String>>(charsMap.values());
+        return new ArrayList<List<String>>(map.values());
     }
 }
 // @lc code=end
-
