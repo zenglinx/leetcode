@@ -7,17 +7,13 @@
 // @lc code=start
 class Solution {
     public int maxSubArray(int[] nums) {
-        int preMaxSum = 0, maxSum = Integer.MIN_VALUE;
-        for (int i = 0; i < nums.length; i++) {
-            int curr = Math.max(preMaxSum + nums[i], nums[i]);
-            if (curr > maxSum) {
-                maxSum = curr;
-            }
-            preMaxSum = curr;
+        int pre = nums[0], maxSum = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            pre = Math.max(pre + nums[i], nums[i]);
+            maxSum = Math.max(pre, maxSum);
         }
 
         return maxSum;
     }
 }
 // @lc code=end
-
